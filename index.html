@@ -1,417 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Fake GTA VI Intro</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KCNX DIRECTORY</title>
 <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+  }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
+  /* Header section with circle and title */
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+  }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:black;
-    color:white;
-}
+  /* Circle with KCNX */
+  .circle {
+    width: 60px;
+    height: 60px;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #fff;
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
 
-/* ROTATE SCREEN */
+  /* Directory title */
+  .directory-title {
+    font-family: "Times New Roman", serif;
+    font-size: 24px;
+    margin: 0;
+  }
 
-#rotateScreen{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    text-align:center;
-    padding:20px;
-}
+  /* Search bar */
+  .search-container {
+    padding: 20px;
+    background-color: #282828;
+  }
 
-#rotateScreen h1{
-    font-size:2rem;
-    margin-bottom:25px;
-}
+  .search-box {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
 
-#rotateBtn{
-    background:#8A2BE2;
-    color:white;
-    border:none;
-    padding:16px 35px;
-    border-radius:12px;
-    font-size:1.1rem;
-    cursor:pointer;
-}
+  /* Song list container */
+  .song-list {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+  }
 
-/* VIDEO */
+  /* Individual song box */
+  .song {
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+  }
 
-#videoContainer{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:none;
-    justify-content:center;
-    align-items:center;
-}
+  .song:hover {
+    background-color: #2a2a2a;
+  }
 
-video{
-    width:100vw;
-    height:100vh;
-    object-fit:cover;
-    background:black;
-}
+  /* Banner circle style with image */
+  .banner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #555;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    margin-right: 15px;
+  }
 
-/* DISCLAIMER */
+  /* Song info container */
+  .song-info {
+    flex: 1;
+  }
 
-#disclaimer{
-    position:fixed;
-    inset:0;
-    background:#050505;
-    overflow-y:auto;
-    display:none;
-    padding:25px;
-}
+  /* Song title style */
+  .song-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 
-#disclaimer h1{
-    color:#8A2BE2;
-    margin-bottom:20px;
-}
+  /* Artist or info text style */
+  .artist-name {
+    font-size: 14px;
+    color: #b3b3b3;
+  }
 
-#disclaimer p{
-    line-height:1.7;
-    margin-bottom:16px;
-}
+  /* Player controls area */
+  .player-controls {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
 
-.warningBox{
-    background:#111;
-    border:1px solid #333;
-    padding:20px;
-    border-radius:12px;
-    margin-top:20px;
-}
+  /* Control buttons styling */
+  .control-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
 
-.btn{
-    margin-top:20px;
-    padding:15px 25px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:1rem;
-    width:100%;
-}
+  .control-btn:hover {
+    color: #1db954; /* Spotify green */
+  }
 
-.accept{
-    background:#8A2BE2;
-    color:white;
-}
+  /* Load more styling if needed */
+  #playerSection {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+  }
 
-.cancel{
-    background:#222;
-    color:white;
-}
+  /* Footer with owner info */
+  .footer {
+    text-align: center;
+    margin: 40px 0 20px 0;
+  }
 
-/* SERVER PAGE */
-
-#serverPage{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:none;
-    overflow-y:auto;
-    padding:25px;
-}
-
-.section{
-    margin-bottom:30px;
-}
-
-.section h2{
-    color:#8A2BE2;
-    margin-bottom:10px;
-}
-
-.cloudBtn{
-    width:100%;
-    padding:18px;
-    border:none;
-    border-radius:12px;
-    background:#8A2BE2;
-    color:white;
-    font-size:1.1rem;
-    cursor:pointer;
-}
-
+  .owner-info {
+    font-family: "Times New Roman", serif;
+    font-size: 18px;
+  }
 </style>
 </head>
-
 <body>
 
-<!-- ROTATE SCREEN -->
-
-<div id="rotateScreen">
-
-    <h1>Rotate Your Screen</h1>
-
-    <button id="rotateBtn">
-        Tap to Rotate
-    </button>
-
+<!-- Header with circle and directory name -->
+<div class="header">
+  <div class="circle">KCNX</div>
+  <h2 class="directory-title">KCNX DIRECTORY</h2>
 </div>
 
-<!-- VIDEO -->
-
-<div id="videoContainer">
-
-<video id="introVideo"
-playsinline
-webkit-playsinline
-muted
-preload="auto">
-
-<source src="https://files.catbox.moe/rcddi3.mp4"
-type="video/mp4">
-
-</video>
-
+<!-- Search bar -->
+<div class="search-container">
+  <input type="text" class="search-box" placeholder="Search songs..." />
 </div>
 
-<!-- DISCLAIMER -->
-
-<div id="disclaimer">
-
-    <h1>Disclaimer</h1>
-
-    <p>
-        This is a fan-made GTA VI inspired slideshow intro.
-        No official Rockstar Games assets are owned by this website.
-    </p>
-
-    <p>
-        Purchase of the original game may be required for official gameplay.
-        Cloud gaming availability depends on region and server support.
-    </p>
-
-    <div class="warningBox">
-
-        <p><strong>Required Internet Speed:</strong> 100 Mbps+</p>
-
-        <p><strong>Minimum Device:</strong>
-        4GB RAM, Android 10 / iOS 15</p>
-
-        <p><strong>Recommended Device:</strong>
-        8GB+ RAM, flagship processor</p>
-
-        <p><strong>Server Stability:</strong>
-        Stable WiFi / 5G connection required</p>
-
-    </div>
-
-    <button class="btn accept" id="continueBtn">
-        Continue to Official GTA V
-    </button>
-
-    <button class="btn cancel" id="cancelBtn">
-        Cancel
-    </button>
-
+<!-- Song list -->
+<div class="song-list" id="songs">
+  <!-- Song boxes will be inserted here -->
 </div>
 
-<!-- SERVER PAGE -->
+<!-- Player section -->
+<div id="playerSection" style="display:none;">
+  <h3>Now Playing:</h3>
+  <div id="player"></div>
+  <!-- Playback controls -->
+  <div class="player-controls" id="controls">
+    <button class="control-btn" id="backward" title="Previous">&#9664;</button>
+    <button class="control-btn" id="playpause" title="Play/Pause">&#9654;</button>
+    <button class="control-btn" id="forward" title="Next">&#9654;&#9654;</button>
+  </div>
+</div>
 
-<div id="serverPage">
-
-    <div class="section">
-        <h2>Server Connection & Stability</h2>
-
-        <p>
-            Stable internet and cloud server connection
-            are required for smooth gameplay.
-        </p>
-    </div>
-
-    <div class="section">
-
-        <h2>Purchase Requirement</h2>
-
-        <p>
-            The game should be officially purchased
-            before local or cloud gameplay.
-        </p>
-
-    </div>
-
-    <div class="section">
-
-        <h2>Internet Requirement</h2>
-
-        <p>
-            Minimum recommended speed:
-            100 Mbps or higher.
-        </p>
-
-    </div>
-
-    <div class="section">
-
-        <h2>Minimum Device Specs</h2>
-
-        <p>
-            • 4GB RAM<br>
-            • Snapdragon 720G equivalent<br>
-            • Android 10 / iOS 15
-        </p>
-
-    </div>
-
-    <div class="section">
-
-        <h2>Maximum Recommended Specs</h2>
-
-        <p>
-            • 16GB RAM<br>
-            • Flagship processor<br>
-            • 120Hz display<br>
-            • WiFi 6 / 5G
-        </p>
-
-    </div>
-
-    <div class="section">
-
-        <h2>Cloud Gaming</h2>
-
-        <p>
-            Use supported cloud gaming services
-            to launch the game online.
-        </p>
-
-    </div>
-
-    <button class="cloudBtn" id="cloudBtn">
-        Run on Cloud for Free
-    </button>
-
+<!-- Footer with owner name -->
+<div class="footer">
+  <div class="owner-info">
+    Playlist owner: (Your Name) • VIP Member &#11088;
+  </div>
 </div>
 
 <script>
+  const songsData = [
+    {
+      title: "Daaha",
+      artist: "Kumar Sanu, Alka Yagnik",
+      url: "https://files.catbox.moe/xbnhk0.mp3",
+      banner: "https://via.placeholder.com/60?text=Daaha"
+    },
+    {
+      title: "Udi Udi",
+      artist: "Aneesh",
+      url: "https://files.catbox.moe/dp2ld1.mp3",
+      banner: "https://via.placeholder.com/60?text=UdiUdi"
+    },
+    {
+      title: "Background Music",
+      artist: "",
+      url: "https://files.catbox.moe/70ldzu.mp3",
+      banner: "https://via.placeholder.com/60?text=Music",
+      info: "This is a background music only."
+    }
+  ];
 
-const rotateBtn = document.getElementById("rotateBtn");
+  const songsContainer = document.getElementById('songs');
+  const playerSection = document.getElementById('playerSection');
+  const playerDiv = document.getElementById('player');
 
-const rotateScreen = document.getElementById("rotateScreen");
+  let currentSongIndex = -1;
+  let audioElement = null;
 
-const videoContainer = document.getElementById("videoContainer");
+  // Function to create song boxes
+  function createSongBox(song, index) {
+    const songDiv = document.createElement('div');
+    songDiv.className = 'song';
 
-const video = document.getElementById("introVideo");
+    // Banner image inside circle
+    const bannerDiv = document.createElement('div');
+    bannerDiv.className = 'banner';
+    bannerDiv.style.backgroundImage = `url('${song.banner}')`;
 
-const disclaimer = document.getElementById("disclaimer");
+    // Info container
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'song-info';
 
-const continueBtn = document.getElementById("continueBtn");
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'song-title';
+    titleDiv.innerText = song.title;
 
-const cancelBtn = document.getElementById("cancelBtn");
-
-const serverPage = document.getElementById("serverPage");
-
-const cloudBtn = document.getElementById("cloudBtn");
-
-/* ROTATE + PLAY VIDEO */
-
-rotateBtn.addEventListener("click", async () => {
-
-    try{
-
-        if(screen.orientation && screen.orientation.lock){
-
-            await screen.orientation.lock("landscape");
-
-        }
-
-    }catch(err){
-
-        console.log("Orientation lock not supported");
-
+    const artistDiv = document.createElement('div');
+    artistDiv.className = 'artist-name';
+    if (song.artist) {
+      artistDiv.innerText = song.artist;
+    } else if (song.info) {
+      artistDiv.innerText = song.info;
+    } else {
+      artistDiv.innerText = "";
     }
 
-    rotateScreen.style.display = "none";
+    infoDiv.appendChild(titleDiv);
+    infoDiv.appendChild(artistDiv);
 
-    videoContainer.style.display = "flex";
+    songDiv.appendChild(bannerDiv);
+    songDiv.appendChild(infoDiv);
 
-    /* PRELOAD VIDEO */
+    // Add click event to play
+    songDiv.addEventListener('click', () => {
+      playSong(index);
+    });
 
-    video.load();
+    return songDiv;
+  }
 
-    /* PLAY VIDEO */
+  // Render songs
+  songsData.forEach((song, index) => {
+    const songBox = createSongBox(song, index);
+    songsContainer.appendChild(songBox);
+  });
 
-    const playPromise = video.play();
+  // Function to load and play song
+  function playSong(index) {
+    currentSongIndex = index;
+    const song = songsData[index];
 
-    if(playPromise !== undefined){
+    // Show player section
+    document.getElementById('playerSection').style.display = 'block';
 
-        playPromise
-        .then(() => {
-
-            console.log("Video playing");
-
-        })
-        .catch(error => {
-
-            console.log(error);
-
-            alert("Video playback failed on this browser.");
-
-        });
-
+    // Clear previous audio
+    if (audioElement) {
+      audioElement.pause();
     }
 
-});
+    // Create new audio element
+    audioElement = new Audio(song.url);
+    audioElement.controls = true;
+    audioElement.autoplay = true;
 
-/* VIDEO ENDED */
+    // Load controls inside div
+    playerDiv.innerHTML = '';
+    playerDiv.appendChild(audioElement);
 
-video.addEventListener("ended", () => {
+    // Set play/pause button
+    document.getElementById('playpause').innerHTML = '&#9654;'; // play icon
 
-    videoContainer.style.display = "none";
+    // When the audio ends, reset button
+    audioElement.onended = () => {
+      document.getElementById('playpause').innerHTML = '&#9654;';
+    };
+  }
 
-    disclaimer.style.display = "block";
+  // Playback control buttons
+  document.getElementById('playpause').addEventListener('click', () => {
+    if (audioElement) {
+      if (audioElement.paused) {
+        audioElement.play();
+        document.getElementById('playpause').innerHTML = '&#10073;&#10073;'; // pause icon
+      } else {
+        audioElement.pause();
+        document.getElementById('playpause').innerHTML = '&#9654;'; // play icon
+      }
+    }
+  });
 
-});
+  document.getElementById('backward').addEventListener('click', () => {
+    if (currentSongIndex > 0) {
+      playSong(currentSongIndex - 1);
+    }
+  });
 
-/* CONTINUE */
-
-continueBtn.addEventListener("click", () => {
-
-    window.location.href =
-    "https://www.rockstargames.com/gta-v";
-
-});
-
-/* CANCEL */
-
-cancelBtn.addEventListener("click", () => {
-
-    disclaimer.style.display = "none";
-
-    serverPage.style.display = "block";
-
-});
-
-/* CLOUD BUTTON */
-
-cloudBtn.addEventListener("click", () => {
-
-    window.location.href =
-    "https://www.chikii.com/";
-
-});
-
+  document.getElementById('forward').addEventListener('click', () => {
+    if (currentSongIndex < songsData.length - 1) {
+      playSong(currentSongIndex + 1);
+    }
+  });
 </script>
 
 </body>
