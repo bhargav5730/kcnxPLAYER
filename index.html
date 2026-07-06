@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>KCNX Music Player</title>
+<style>body{font-family:Arial;background:#111;color:#eee;padding:20px}button,input{margin:4px}#list div{cursor:pointer;padding:4px}.active{background:#333}</style>
+</head><body><h2>KCNX Music Player</h2>
+<input type="file" id="files" accept="audio/*" multiple><br>
+<audio id="audio" controls style="width:100%"></audio><br>
+<button id="prev">Prev</button><button id="play">Play/Pause</button><button id="next">Next</button>
+<div id="list"></div>
+<script>
+let tracks=[],i=0,a=document.getElementById('audio'),list=document.getElementById('list');
+files.onchange=e=>{tracks=[...e.target.files];render();if(tracks.length)load(0);}
+function render(){list.innerHTML='';tracks.forEach((f,n)=>{let d=document.createElement('div');d.textContent=f.name;d.onclick=()=>load(n);list.appendChild(d);});}
+function load(n){i=n;a.src=URL.createObjectURL(tracks[i]);a.play();[...list.children].forEach((x,k)=>x.className=k==i?'active':'');}
+play.onclick=()=>a.paused?a.play():a.pause();
+next.onclick=()=>tracks.length&&load((i+1)%tracks.length);
+prev.onclick=()=>tracks.length&&load((i-1+tracks.length)%tracks.length);
+a.onended=()=>tracks.length&&load((i+1)%tracks.length);
+</script></body></html>
