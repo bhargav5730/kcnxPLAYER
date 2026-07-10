@@ -1,17 +1,281 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>KCNX Music Player</title>
-<style>body{font-family:Arial;background:#111;color:#eee;padding:20px}button,input{margin:4px}#list div{cursor:pointer;padding:4px}.active{background:#333}</style>
-</head><body><h2>KCNX Music Player</h2>
-<input type="file" id="files" accept="audio/*" multiple><br>
-<audio id="audio" controls style="width:100%"></audio><br>
-<button id="prev">Prev</button><button id="play">Play/Pause</button><button id="next">Next</button>
-<div id="list"></div>
-<script>
-let tracks=[],i=0,a=document.getElementById('audio'),list=document.getElementById('list');
-files.onchange=e=>{tracks=[...e.target.files];render();if(tracks.length)load(0);}
-function render(){list.innerHTML='';tracks.forEach((f,n)=>{let d=document.createElement('div');d.textContent=f.name;d.onclick=()=>load(n);list.appendChild(d);});}
-function load(n){i=n;a.src=URL.createObjectURL(tracks[i]);a.play();[...list.children].forEach((x,k)=>x.className=k==i?'active':'');}
-play.onclick=()=>a.paused?a.play():a.pause();
-next.onclick=()=>tracks.length&&load((i+1)%tracks.length);
-prev.onclick=()=>tracks.length&&load((i-1+tracks.length)%tracks.length);
-a.onended=()=>tracks.length&&load((i+1)%tracks.length);
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCNX Music Player</title>
+    <style>
+        /* Animated Bright Fluid Background */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Custom File Input */
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .file-label:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Audio Element */
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 30px;
+        }
+
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: #fff;
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            background: #f0f0f0;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Track List */
+        #list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 5px;
+        }
+
+        #list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+
+        #list div {
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: background 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.95rem;
+        }
+
+        #list div:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #list div.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+            border-left: 4px solid #fff;
+        }
+
+        /* Streaming Apps Banner & Slogan Box */
+        .streaming-banner {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-sizing: border-box;
+        }
+
+        .slogan-box {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ffed4a, #ff7676);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .app-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        .app-btn:hover {
+            transform: scale(1.03);
+            filter: brightness(1.1);
+        }
+
+        /* Brand Colors */
+        .spotify { background-color: #1DB954; }
+        .jiosaavn { background-color: #00d2c4; color: #111; }
+        .wynk { background-color: #e11e25; }
+        .gaana { background-color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <!-- Main Music Player Card -->
+    <div class="container">
+        <h2>KCNX Music Player</h2>
+        
+        <div class="file-input-wrapper">
+            <label for="files" class="file-label">Choose Local Audio Files</label>
+            <input type="file" id="files" accept="audio/*" multiple>
+        </div>
+
+        <audio id="audio" controls></audio>
+        
+        <div class="controls">
+            <button id="prev">Prev</button>
+            <button id="play">Play/Pause</button>
+            <button id="next">Next</button>
+        </div>
+        
+        <div id="list"></div>
+    </div>
+
+    <!-- Streaming Redirection Banner (Slogan Box) -->
+    <div class="streaming-banner">
+        <div class="slogan-box">
+            🎵 Can't find your track? Stream it Anywhere! 🚀
+        </div>
+        <div class="app-buttons">
+            <a href="https://open.spotify.com" target="_blank" class="app-btn spotify">Spotify</a>
+            <a href="https://www.jiosaavn.com" target="_blank" class="app-btn jiosaavn">JioSaavn</a>
+            <a href="https://wynk.in/music" target="_blank" class="app-btn wynk">Wynk Music</a>
+            <a href="https://gaana.com" target="_blank" class="app-btn gaana">Gaana</a>
+        </div>
+    </div>
+
+    <script>
+    let tracks = [], i = 0, a = document.getElementById('audio'), list = document.getElementById('list');
+    
+    files.onchange = e => {
+        tracks = [...e.target.files];
+        render();
+        if (tracks.length) load(0);
+    }
+    
+    function render() {
+        list.innerHTML = '';
+        tracks.forEach((f, n) => {
+            let d = document.createElement('div');
+            d.textContent = f.name;
+            d.onclick = () => load(n);
+            list.appendChild(d);
+        });
+    }
+    
+    function load(n) {
+        i = n;
+        a.src = URL.createObjectURL(tracks[i]);
+        a.play();
+        [...list.children].forEach((x, k) => x.className = k == i ? 'active' : '');
+    }
+    
+    play.onclick = () => a.paused ? a.play() : a.pause();
+    next.onclick = () => tracks.length && load((i + 1) % tracks.length);
+    prev.onclick = () => tracks.length && load((i - 1 + tracks.length) % tracks.length);
+    a.onended = () => tracks.length && load((i + 1) % tracks.length);
+    </script>
+
+</body>
+</html>
